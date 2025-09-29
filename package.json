@@ -1,0 +1,36 @@
+{
+  "name": "phiradian",
+  "version": "1.0.0",
+  "description": "The next Discord Bot to continue Phira Utilities mission",
+  "main": "./dist/index.js",
+  "private": true,
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npm run build && node --env-file=.env .",
+    "deploy": "node --env-file=.env .",
+    "dev": "tsx --env-file=.env src/index.ts",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "Nekitori17",
+    "Discord",
+    "Bot"
+  ],
+  "author": "Nekitori17",
+  "repository": "git://github.com/Nekitori17/Phiradian.git",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.5.2",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "discord.js": "^14.22.1",
+    "json-store-typed": "^1.1.0",
+    "lodash": "^4.17.21",
+    "sharp": "^0.34.4"
+  }
+}
