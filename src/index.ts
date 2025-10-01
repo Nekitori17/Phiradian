@@ -29,6 +29,7 @@ async function run(client: Client) {
     preload();
     console.log("🍞 | Loaded all stuffs into RAM");
     discordEventHandler(client);
+    
     client.setMaxListeners(100);
     client.login(process.env.BOT_TOKEN as string);
   } catch (error: any) {

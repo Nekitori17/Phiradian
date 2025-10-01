@@ -81,7 +81,7 @@ const command: CommandInterface = {
             .setDescription(
               `\`\`\` Please use the Select Menu below to explore the corresponding category \`\`\`` +
                 "\n\n" +
-                `* 🎵 Small bot with **Phira Utilities.**`
+                "`Phiradian is a Discord bot designed to interact with the Phira application, providing various utilities and enhancements. Use the commands to manage your Phira experience directly from Discord.`"
             )
             .setFooter({
               text: interaction.guild?.name || client.user?.displayName!,

@@ -14,7 +14,7 @@ export default {
     {
       activities: [
         {
-          name: `Phira`,
+          name: "Phigros is the best Rhythm Game",
           type: ActivityType.Watching,
         },
       ],
@@ -23,7 +23,7 @@ export default {
     {
       activities: [
         {
-          name: `Phigros`,
+          name: `Phira Utilities`,
           type: ActivityType.Competing,
         },
       ],
@@ -31,9 +31,6 @@ export default {
     },
   ] as PresenceData[],
   presenceIntervalTime: 10000,
-  geminiAI: {
-    model: "gemini-2.5-pro",
-  },
   defaultBotPermissionsRequired: [
     PermissionFlagsBits.ViewChannel,
     PermissionFlagsBits.SendMessages,
