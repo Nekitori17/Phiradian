@@ -71,7 +71,7 @@ export function preload() {
     }
   }
 
-  const buttonFolderPath = path.join(__dirname, "./buttons");
+  const buttonFolderPath = path.join(__dirname, "./menus/buttons");
   if (fs.existsSync(buttonFolderPath))
     // Load all buttons
     preloadCategoryMap<ButtonInterface>(buttonFolderPath, buttonMap);
