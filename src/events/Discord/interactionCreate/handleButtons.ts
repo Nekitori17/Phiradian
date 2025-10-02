@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { GuildMember, Interaction } from "discord.js";
+import { Interaction } from "discord.js";
 import { getButtonObject } from "../../../preloaded";
 import { CustomError } from "../../../helpers/utils/CustomError";
 import checkPermission from "../../../validator/checkPermission";
@@ -11,16 +11,13 @@ const event: DiscordEventInterface = async (
   client,
   interaction: Interaction
 ) => {
-  // Check if the interaction is a button interaction
   if (!interaction.isButton()) return;
   // Check if the customId starts with "$"
   if (!interaction.customId.startsWith("$")) return;
 
   try {
-    // Split the customId to get category and actual customId
     const [category, customId] = interaction.customId.split("_");
 
-    // Get the button object from local files
     const buttonObject = getButtonObject(
       _.camelCase(category.replace("$", "")),
       _.camelCase(customId)
@@ -45,7 +42,6 @@ const event: DiscordEventInterface = async (
 
     let userCooldown = new UserInteractionCooldown(interaction.user.id);
 
-    // Check for button cooldown
     if (buttonObject.cooldown) {
       const cooldownResponse = userCooldown.isCooledDown(
         interaction.customId.slice(1),
@@ -53,7 +49,6 @@ const event: DiscordEventInterface = async (
         buttonObject.cooldown
       );
 
-      // If the button is not cooledDown, throw an error
       if (!cooldownResponse.cooledDown && cooldownResponse.nextTime)
         throw new CustomError({
           name: "Cooldown",
@@ -62,7 +57,6 @@ const event: DiscordEventInterface = async (
         });
     }
 
-    // Check for permissions
     if (interaction.guild) {
       checkPermission(
         interaction.member?.permissions,
@@ -72,7 +66,6 @@ const event: DiscordEventInterface = async (
       );
     }
 
-    // Execute the button's action
     const succeed = (await buttonObject.execute(interaction, client)) ?? true;
     if (succeed && buttonObject.cooldown) userCooldown.updateCooldown();
   } catch (error) {

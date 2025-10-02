@@ -16,7 +16,6 @@ const command: CommandInterface = {
     try {
       await interaction.deferReply();
 
-      // Create dropdown menu to select command category
       const commandCategoriesSelectMenuOption = Object.entries(
         commandCategories
       ).map(([category, { label, emoji, description }]) =>
@@ -69,7 +68,6 @@ const command: CommandInterface = {
           .setColor("Aqua");
       }
 
-      // Send main embed with dropdown menu
       const helpEmbedReply = await interaction.editReply({
         embeds: [
           new EmbedBuilder()
@@ -110,7 +108,6 @@ const command: CommandInterface = {
         async (menuCategoriesSelectInteraction) => {
           if (!menuCategoriesSelectInteraction.values.length) return;
 
-          // Replace old embed with new embed, which has a list of commands. In the category user, which was selected?
           await helpEmbedReply.edit({
             embeds: [
               commandListEmbed(menuCategoriesSelectInteraction.values[0]),

@@ -21,7 +21,6 @@ export default async ({
 }) => {
     let fileInputBuffer: Buffer;
 
-    // Load file from URL if provided
     if (url) {
       const fileResponse = await fetch(url)
 
@@ -31,16 +30,13 @@ export default async ({
       const fileDataArrayBuffer = await fileResponse.arrayBuffer();
       fileInputBuffer = Buffer.from(fileDataArrayBuffer);
     }
-    // Or use directly provided buffer
     else if (buffer) {
       fileInputBuffer = Buffer.from(buffer);
     }
-    // If neither is provided, throw error
     else {
       throw new Error("No url or buffer provided");
     }
 
-    // Convert the image buffer to specified format
     const fileConverted = await sharp(fileInputBuffer)
       .toFormat(format)
       .toBuffer();
@@ -50,7 +46,6 @@ export default async ({
       process.hrtime.bigint() / 1000000n
     ).toString()}.${format}`;
 
-    // Return the image as a Discord attachment
     return new AttachmentBuilder(fileConverted, {
       name: fileName,
     });

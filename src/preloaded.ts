@@ -47,7 +47,6 @@ function preloadCategoryMap<T>(root: string, sourceMap: Map<string, T>) {
  * Loads all commands, contexts, buttons, and select menus from their respective directories into maps for quick access.
  */
 export function preload() {
-  // Load all command with normal slash command, message command and alias
   const allLocalCommands = getLocal<CommandInterface>(
     path.join(__dirname, "./commands")
   );
@@ -63,7 +62,6 @@ export function preload() {
 
   const contextFolderPath = path.join(__dirname, "./contexts");
   if (fs.existsSync(contextFolderPath)) {
-    // Load all context menus
     const allLocalContext = getLocal<ContextInterface>(contextFolderPath);
 
     for (const context of allLocalContext) {
@@ -73,12 +71,10 @@ export function preload() {
 
   const buttonFolderPath = path.join(__dirname, "./menus/buttons");
   if (fs.existsSync(buttonFolderPath))
-    // Load all buttons
     preloadCategoryMap<ButtonInterface>(buttonFolderPath, buttonMap);
 
   const selectFolderPath = path.join(__dirname, "./menus/selects");
   if (fs.existsSync(selectFolderPath))
-    // Load all select menu
     preloadCategoryMap<SelectMenuInterface>(selectFolderPath, selectMap);
 }
 

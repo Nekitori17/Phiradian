@@ -16,18 +16,13 @@ export default (
   folderOnly: boolean = false,
   exception: string[] = []
 )=> {
-  // Read all entries (files and folders) in the directory
   const files = fs.readdirSync(directory, { withFileTypes: true });
 
   return _(files)
-    // Filter entries by folderOnly flag: keep only directories or only files
     .filter((file) =>
       folderOnly ? file.isDirectory() : file.isFile()
     )
-    // Exclude files/folders whose name is in exception list
     .filter((file) => !exception.includes(file.name))
-    // Map each filtered entry to its full path string
     .map((file) => path.join(directory, file.name))
-    // Unwrap lodash chain to an array
     .value();
 };

@@ -23,7 +23,6 @@ function areChoicesDifferent(
   existingChoices: readonly ApplicationCommandOptionChoiceData[] | undefined,
   localChoices: CommandOptionChoiceInterface[]
 ) {
-  // Check if the lengths of the choice arrays are different
   if ((existingChoices?.length || 0) !== localChoices.length) return true;
 
   // Iterate through each local choice and attempt to find a matching existing choice by name
@@ -50,10 +49,8 @@ const areOptionsDifferent = (
   existingOptions: ApplicationCommandOption[],
   localOptions: CommandOptionInterface[]
 ): boolean => {
-  // If the lengths of the options arrays are different, they are considered different
   if (existingOptions.length !== localOptions.length) return true;
 
-  // If no local options are provided, consider them different
   for (const localOption of localOptions) {
     // Find the existing option that matches the local option by name
     const existingOption = existingOptions?.find(
@@ -65,17 +62,14 @@ const areOptionsDifferent = (
       return true;
     }
 
-    // Compare the properties of the local option with the existing option
     if (localOption.description !== existingOption.description) {
       return true;
     }
 
-    // Check if the type of the local option matches the existing option
     if (localOption.type !== existingOption.type) {
       return true;
     }
 
-    // Check if the channel types match for channel options
     if (localOption.autocomplete !== existingOption.autocomplete) {
       return true;
     }

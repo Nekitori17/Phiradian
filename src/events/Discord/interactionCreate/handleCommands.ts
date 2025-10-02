@@ -1,4 +1,4 @@
-import { GuildMember, Interaction } from "discord.js";
+import { Interaction } from "discord.js";
 import { getExactCommandObject } from "../../../preloaded";
 import checkPermission from "../../../validator/checkPermission";
 import { CustomError } from "../../../helpers/utils/CustomError";
@@ -11,16 +11,13 @@ const event: DiscordEventInterface = async (
   client,
   interaction: Interaction
 ) => {
-  // Check if the interaction is a chat input command
   if (!interaction.isChatInputCommand()) return;
 
   try {
-    // Find the command object based on the interaction's command name
     const commandObject = getExactCommandObject(interaction.commandName);
 
     if (!commandObject) return;
 
-    // Check if the command can be used in DMs
     if (!commandObject.useInDm)
       if (!interaction.guild) {
         return interaction.user.send({
@@ -33,8 +30,6 @@ const event: DiscordEventInterface = async (
         });
       }
 
-    //
-    // Check if the command is for developers only
     if (commandObject.devOnly) {
       const DEVELOPERS = (process.env.DEVELOPER_ACCOUNT_IDS as string).split(
         ","
@@ -50,16 +45,13 @@ const event: DiscordEventInterface = async (
 
     let userCooldown = new UserInteractionCooldown(interaction.user.id);
 
-    // Check for command cooldown
     if (commandObject.cooldown) {
-      // Check if the command is currently cooledDown for the user
       const cooldownResponse = userCooldown.isCooledDown(
         interaction.commandName,
         "command",
         commandObject.cooldown
       );
 
-      // If the command is not cooledDown, throw an error
       if (!cooldownResponse.cooledDown && cooldownResponse.nextTime)
         throw new CustomError({
           name: "Cooldown",
@@ -68,7 +60,6 @@ const event: DiscordEventInterface = async (
         });
     }
 
-    // Check for permissions
     if (interaction.guild) {
       checkPermission(
         interaction.member?.permissions,
@@ -78,7 +69,6 @@ const event: DiscordEventInterface = async (
       );
     }
 
-    // Execute the command
     const succeed = (await commandObject.execute(interaction, client)) ?? true;
     if (succeed && commandObject.cooldown) userCooldown.updateCooldown();
   } catch (error) {

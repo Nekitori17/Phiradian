@@ -14,12 +14,10 @@ const event: DiscordEventInterface = async (
   if (!interaction.isContextMenuCommand()) return;
 
   try {
-    // Find the context menu object based on the interaction's command name
     const contextObject = getContextObject(interaction.commandName);
 
     if (!contextObject) return;
 
-    // Check if the context menu can be used in DMs
     if (!contextObject.useInDm)
       if (!interaction.guild) {
         return interaction.user.send({
@@ -32,7 +30,6 @@ const event: DiscordEventInterface = async (
         });
       }
 
-    // Check if the command is for developers only
     if (contextObject.devOnly) {
       const DEVELOPERS = (process.env.DEVELOPER_ACCOUNT_IDS as string).split(
         ","
@@ -48,7 +45,6 @@ const event: DiscordEventInterface = async (
 
     const userCooldown = new UserInteractionCooldown(interaction.user.id);
 
-    // Check for context menu cooldown
     if (contextObject.cooldown) {
       const cooldownResponse = userCooldown.isCooledDown(
         interaction.commandName,
@@ -56,7 +52,6 @@ const event: DiscordEventInterface = async (
         contextObject.cooldown
       );
 
-      // If the command is not cooledDown, throw an error
       if (!cooldownResponse.cooledDown && cooldownResponse.nextTime)
         throw new CustomError({
           name: "Cooldown",
@@ -65,7 +60,6 @@ const event: DiscordEventInterface = async (
         });
     }
 
-    // Check for permissions
     if (interaction.guild) {
       checkPermission(
         interaction.member?.permissions,
@@ -75,7 +69,6 @@ const event: DiscordEventInterface = async (
       );
     }
 
-    // Execute the context menu
     const succeed = (await contextObject.execute(interaction, client)) ?? true;
     if (succeed && contextObject.cooldown) userCooldown.updateCooldown();
   } catch (error) {

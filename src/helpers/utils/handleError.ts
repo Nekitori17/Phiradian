@@ -5,7 +5,6 @@ import { CustomError } from "./CustomError";
 import CommonEmbedBuilder from "../embeds/commonEmbedBuilder";
 import { AnyInteraction } from "../../types/AnyInteraction";
 
-// Path to the logs folder
 const logFolderPath = path.join(__dirname, "../../../logs");
 
 /**

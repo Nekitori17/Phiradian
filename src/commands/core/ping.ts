@@ -5,7 +5,6 @@ const command: CommandInterface = {
     await interaction.reply("> ⌛ Pinging...");
     const reply = await interaction.fetchReply();
 
-    // Calculate latency
     const ping = reply.createdTimestamp - interaction.createdTimestamp;
     await interaction.editReply(
       `> 🏓 Pong! Bot Latency is \`${ping}ms\` | API Latency is \`${client.ws.ping}\`ms.`

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { GuildMember, Interaction } from "discord.js";
+import { Interaction } from "discord.js";
 import { getSelectObject } from "../../../preloaded";
 import { CustomError } from "../../../helpers/utils/CustomError";
 import checkPermission from "../../../validator/checkPermission";
@@ -11,13 +11,11 @@ const event: DiscordEventInterface = async (
   client,
   interaction: Interaction
 ) => {
-  // Check if the interaction is a string select menu
   if (!interaction.isStringSelectMenu()) return;
   // Check if the customId starts with "$"
   if (!interaction.customId.startsWith("$")) return;
 
   try {
-    // Get the select menu option object from local files
     const selectMenuOptionObject = getSelectObject(
       _.camelCase(interaction.customId.replace("$", "")),
       _.camelCase(interaction.values[0])
@@ -32,7 +30,6 @@ const event: DiscordEventInterface = async (
       components: interaction.message.components,
     });
 
-    // Check if the select menu is for developers only
     if (selectMenuOptionObject.devOnly) {
       const DEVELOPERS = (process.env.DEVELOPER_ACCOUNT_IDS as string).split(
         ","
@@ -48,7 +45,6 @@ const event: DiscordEventInterface = async (
 
     const userCooldown = new UserInteractionCooldown(interaction.user.id);
 
-    // Check for select menu cooldown
     if (selectMenuOptionObject.cooldown) {
       const cooldownResponse = userCooldown.isCooledDown(
         interaction.values[0],
@@ -56,7 +52,6 @@ const event: DiscordEventInterface = async (
         selectMenuOptionObject.cooldown
       );
 
-      // If the select menu is not cooledDown, throw an error
       if (!cooldownResponse.cooledDown && cooldownResponse.nextTime)
         throw new CustomError({
           name: "Cooldown",
@@ -65,7 +60,6 @@ const event: DiscordEventInterface = async (
         });
     }
 
-    // Check for permissions
     if (interaction.guild) {
       checkPermission(
         interaction.member?.permissions,
@@ -75,7 +69,6 @@ const event: DiscordEventInterface = async (
       );
     }
 
-    // Execute the select menu's action
     const succeed =
       (await selectMenuOptionObject.execute(interaction, client)) ?? true;
     if (succeed && selectMenuOptionObject.cooldown)
