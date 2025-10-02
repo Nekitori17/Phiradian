@@ -1,4 +1,3 @@
-import axios from "axios";
 import sharp from "sharp";
 import { AttachmentBuilder } from "discord.js";
 
@@ -24,13 +23,13 @@ export default async ({
 
     // Load file from URL if provided
     if (url) {
-      const fileResponseArrayBuffer = await axios
-        .get(url, {
-          responseType: "arraybuffer",
-        })
-        .then((res) => res.data);
+      const fileResponse = await fetch(url)
 
-      fileInputBuffer = Buffer.from(fileResponseArrayBuffer);
+      if (!fileResponse.ok)
+        throw new Error(`Failed to fetch image from URL: ${fileResponse.statusText}`);
+
+      const fileDataArrayBuffer = await fileResponse.arrayBuffer();
+      fileInputBuffer = Buffer.from(fileDataArrayBuffer);
     }
     // Or use directly provided buffer
     else if (buffer) {

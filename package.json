@@ -25,7 +25,6 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "axios": "^1.12.2",
     "discord.js": "^14.22.1",
     "json-store-typed": "^1.1.0",
     "lodash": "^4.17.21",
